@@ -41,7 +41,7 @@ pipeline {
         stage('OCI Image BnP') {
           steps {
             container('kaniko') {
-              sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --no-push --skip-tls-verify --cache=true --destination=docker.io/mbakalarski/private'
+              sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --no-push --skip-tls-verify --destination=docker.io/mbakalarski/private'
             }
           }
         }
