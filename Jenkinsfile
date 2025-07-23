@@ -20,7 +20,20 @@ pipeline {
     }
     stage('Static Analysis') {
       parallel {
-        stage('SCA - OWASP Dependency-Check') {
+        stage('OSS License Finder') {
+          steps {
+            container('licensefinder') {
+              sh 'ls -al'
+              sh '''#!/bin/bash --login
+                      /bin/bash --login
+                      rvm use default
+                      gem install license_finder
+                      license_finder
+                    '''
+            }
+          }
+        }
+        stage('OWASP Dependency-Check') {
           steps {
             container('maven') {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
