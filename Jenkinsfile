@@ -33,6 +33,18 @@ pipeline {
             }
           }
         }
+        stage('SAST') {
+          steps {
+            container('slscan') {
+              sh 'scan --type java,depscan --build'
+            }
+          }
+          post {
+            success {
+              archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/*', fingerprint: true, onlyIfSuccessful: true
+            }
+          }
+        }
         stage('Generate SBOM') {
           steps {
             container('maven') {
@@ -55,8 +67,7 @@ pipeline {
           }
           post {
             always {
-              // archiveArtifacts allowEmptyArchive: true, artifacts: 'target/dependency-check-report.html', fingerprint: true, onlyIfSuccessful: true
-              archiveArtifacts allowEmptyArchive: true, artifacts: 'target/dependency-check-report.html', fingerprint: true, onlyIfSuccessful: false
+              archiveArtifacts allowEmptyArchive: true, artifacts: 'target/dependency-check-report.html', fingerprint: true, onlyIfSuccessful: true
               // dependencyCheckPublisher pattern: 'report.xml'
             }
           }
@@ -67,18 +78,6 @@ pipeline {
               sh 'mvn test'
             }
           }
-        }
-      }
-    }
-    stage('SAST') {
-      steps {
-        container('slscan') {
-          sh 'scan --type java,depscan --build'
-        }
-      }
-      post {
-        success {
-          archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/*', fingerprint: true, onlyIfSuccessful: true
         }
       }
     }
