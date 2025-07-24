@@ -42,6 +42,7 @@ pipeline {
           post {
             success {
               archiveArtifacts allowEmptyArchive: true, artifacts: 'target/bom.xml', fingerprint: true, onlyIfSuccessful: true
+              archiveArtifacts allowEmptyArchive: true, artifacts: 'target/bom.json', fingerprint: true, onlyIfSuccessful: true
             }
           }
         }
