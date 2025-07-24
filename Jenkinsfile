@@ -20,7 +20,7 @@ pipeline {
     }
     stage('Static Analysis') {
       parallel {
-        stage('OSS License Finder') {
+        stage('OSS License Checker') {
           steps {
             container('licensefinder') {
               sh 'ls -al'
@@ -30,6 +30,18 @@ pipeline {
                       gem install license_finder
                       license_finder
                     '''
+            }
+          }
+        }
+        stage('Generate SBOM') {
+          steps {
+            container('maven') {
+              sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
+            }
+          }
+          post {
+            success {
+              archiveArtifacts allowEmptyArchive: true, artifacts: 'target/bom.xml', fingerprint: true, onlyIfSuccessful: true
             }
           }
         }
