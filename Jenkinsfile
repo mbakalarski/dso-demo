@@ -36,7 +36,7 @@ pipeline {
         stage('Generate SBOM') {
           steps {
             container('maven') {
-              sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom -Dcyclonedx.outputFormat=json'
+              sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom -Dcyclonedx.outputFormat=json -Dcyclonedx.outputFile=target/bom.json'
             }
           }
           post {
