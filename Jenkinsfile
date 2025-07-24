@@ -57,7 +57,7 @@ pipeline {
             }
           }
         }
-        stage('OWASP Dependency-Check') {
+        stage('SCA: OWASP Dependency-Check') {
           steps {
             container('maven') {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
