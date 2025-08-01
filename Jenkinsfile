@@ -6,6 +6,11 @@ pipeline {
       idleMinutes 1
     }
   }
+
+  environment {
+    NVD_API_KEY = credentials('nvd-api-key') // Fetch the NVD API key from Jenkins credentials store
+  }
+
   stages {
     stage('Build') {
       parallel {
@@ -61,7 +66,7 @@ pipeline {
           steps {
             container('maven') {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                sh 'mvn org.owasp:dependency-check-maven:check'
+                sh "mvn org.owasp:dependency-check-maven:check -Dnvd.apiKey=${NVD_API_KEY}"
               }
             }
           }
