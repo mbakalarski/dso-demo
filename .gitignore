@@ -25,3 +25,6 @@ hs_err_pid*
 # Trage output
 target/
 .DS_Store
+
+# reports
+reports
