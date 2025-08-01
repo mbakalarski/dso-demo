@@ -20,7 +20,7 @@ pipeline {
     }
     stage('Static Analysis') {
       parallel {
-        stage('OSS License Checker') {
+        stage('[supply chain] OSS License Checker') {
           steps {
             container('licensefinder') {
               sh 'ls -al'
@@ -45,7 +45,7 @@ pipeline {
             }
           }
         }
-        stage('Generate SBOM') {
+        stage('[supply chain] Generate SBOM') {
           steps {
             container('maven') {
               sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
@@ -57,7 +57,7 @@ pipeline {
             }
           }
         }
-        stage('SCA: OWASP Dependency-Check') {
+        stage('[supply chain] OWASP Dependency-Check') {
           steps {
             container('maven') {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
