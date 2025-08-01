@@ -23,7 +23,7 @@ pipeline {
         }
       }
     }
-    stage('Static Analysis') {
+    stage('[Test] Static Analysis') {
       parallel {
         stage('[supply chain] OSS License Checker') {
           steps {
