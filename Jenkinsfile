@@ -25,7 +25,7 @@ pipeline {
     }
     stage('[Test] Static Analysis') {
       parallel {
-        stage('[supply chain] OSS License Checker') {
+        stage('[supply chain][compliance] OSS License Checker') {
           steps {
             container('licensefinder') {
               sh 'ls -al'
