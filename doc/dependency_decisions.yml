@@ -41,21 +41,21 @@
     :why: 
     :versions:
     - 1.5.18
-    :when: 2025-08-04
+    :when: 2025-08-04 15:29:37.769070000 Z
 - - :approve
   - logback-classic
   - :who: 
     :why: 
     :versions:
     - 1.5.18
-    :when: 2025-08-04
+    :when: 2025-08-04 15:29:37.769070000 Z
 - - :approve
   - jakarta.xml.bind-api
   - :who: 
     :why: 
     :versions:
     - 4.0.2
-    :when: 2025-08-04
+    :when: 2025-08-04 15:29:37.769070000 Z
 - - :approve
   - jakarta.el
   - :who: 
@@ -69,4 +69,4 @@
     :why: 
     :versions:
     - 2.1.1
-    :when: 2025-08-04
+    :when: 2025-08-04 15:29:37.769070000 Z
