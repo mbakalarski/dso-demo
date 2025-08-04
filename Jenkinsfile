@@ -64,7 +64,7 @@ pipeline {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                 withCredentials([string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')]) {
                   // sh 'mvn org.owasp:dependency-check-maven:check -Dnvd.apiKey=$NVD_API_KEY'
-                  echo $NVD_API_KEY
+                  sh "echo $NVD_API_KEY"
                 }
               }
             }
