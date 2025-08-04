@@ -67,7 +67,7 @@ pipeline {
                 //   // sh "echo $NVD_API_KEY"
                 // }
                 sh '''
-                  mvn -Dnvd.apiKey=604a7067-a47b-4d64-a437-f7df508b8e19 org.owasp:dependency-check-maven:check
+                  mvn -Dnvd.api.key=604a7067-a47b-4d64-a437-f7df508b8e19 org.owasp:dependency-check-maven:check
                 '''
               }
             }
