@@ -7,10 +7,6 @@ pipeline {
     }
   }
 
-  // environment {
-  //   NVD_API_KEY = credentials('nvd-api-key') // Fetch the NVD API key from Jenkins credentials store
-  // }
-
   stages {
     stage('Build') {
       parallel {
@@ -25,50 +21,49 @@ pipeline {
     }
     stage('[Test] Static Analysis') {
       parallel {
-        // stage('[supply chain][compliance] OSS License Checker') {
-        //   steps {
-        //     container('licensefinder') {
-        //       sh 'ls -al'
-        //       sh '''#!/bin/bash --login
-        //               /bin/bash --login
-        //               rvm use default
-        //               gem install license_finder
-        //               license_finder
-        //             '''
-        //     }
-        //   }
-        // }
-        // stage('SAST') {
-        //   steps {
-        //     container('slscan') {
-        //       sh 'scan --type java,depscan --build'
-        //     }
-        //   }
-        //   post {
-        //     success {
-        //       archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/*', fingerprint: true, onlyIfSuccessful: true
-        //     }
-        //   }
-        // }
-        // stage('[supply chain] Generate SBOM') {
-        //   steps {
-        //     container('maven') {
-        //       sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
-        //     }
-        //   }
-        //   post {
-        //     success {
-        //       archiveArtifacts allowEmptyArchive: true, artifacts: 'target/bom.xml, target/bom.json', fingerprint: true, onlyIfSuccessful: true
-        //     }
-        //   }
-        // }
+        stage('[supply chain][compliance] OSS License Checker') {
+          steps {
+            container('licensefinder') {
+              sh 'ls -al'
+              sh '''#!/bin/bash --login
+                      /bin/bash --login
+                      rvm use default
+                      gem install license_finder
+                      license_finder
+                    '''
+            }
+          }
+        }
+        stage('SAST') {
+          steps {
+            container('slscan') {
+              sh 'scan --type java,depscan --build'
+            }
+          }
+          post {
+            success {
+              archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/*', fingerprint: true, onlyIfSuccessful: true
+            }
+          }
+        }
+        stage('[supply chain] Generate SBOM') {
+          steps {
+            container('maven') {
+              sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
+            }
+          }
+          post {
+            success {
+              archiveArtifacts allowEmptyArchive: true, artifacts: 'target/bom.xml, target/bom.json', fingerprint: true, onlyIfSuccessful: true
+            }
+          }
+        }
         stage('[supply chain] OWASP Dependency-Check') {
           steps {
             container('maven') {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                // sh 'mvn org.owasp:dependency-check-maven:check -Dnvd.apiKey=$NVD_API_KEY'
                 withCredentials([string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')]) {
-                  sh 'echo $NVD_API_KEY'
+                  sh 'mvn org.owasp:dependency-check-maven:check -Dnvd.apiKey=$NVD_API_KEY'
                 }
               }
             }
