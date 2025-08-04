@@ -48,7 +48,6 @@
 				<artifactId>dependency-check-maven</artifactId>
 				<version>12.1.3</version>
 				<configuration>
-					<nvdApiKey>604a7067-a47b-4d64-a437-f7df508b8e19</nvdApiKey>
 					<failBuildOnCVSS>8</failBuildOnCVSS>
 				</configuration>
 				<executions>
