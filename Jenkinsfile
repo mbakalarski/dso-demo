@@ -7,9 +7,9 @@ pipeline {
     }
   }
 
-  environment {
-    NVD_API_KEY = credentials('nvd-api-key') // Fetch the NVD API key from Jenkins credentials store
-  }
+  // environment {
+  //   NVD_API_KEY = credentials('nvd-api-key') // Fetch the NVD API key from Jenkins credentials store
+  // }
 
   stages {
     stage('Build') {
@@ -66,10 +66,10 @@ pipeline {
           steps {
             container('maven') {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                // sh "mvn org.owasp:dependency-check-maven:check -Dnvd.apiKey=${NVD_API_KEY}"
-                // sh('mvn org.owasp:dependency-check-maven:check -Dnvd.apiKey=$NVD_API_KEY')
-                echo $NVD_API_KEY
                 // sh 'mvn org.owasp:dependency-check-maven:check -Dnvd.apiKey=$NVD_API_KEY'
+                withCredentials([string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')]) {
+                  sh 'echo $NVD_API_KEY'
+                }
               }
             }
           }
