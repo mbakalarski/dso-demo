@@ -34,18 +34,6 @@ pipeline {
             }
           }
         }
-        stage('SAST') {
-          steps {
-            container('slscan') {
-              sh 'scan --type java,depscan --build'
-            }
-          }
-          post {
-            success {
-              archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/*', fingerprint: true, onlyIfSuccessful: true
-            }
-          }
-        }
         stage('[supply chain] Generate SBOM') {
           steps {
             container('maven') {
@@ -72,6 +60,18 @@ pipeline {
             always {
               archiveArtifacts allowEmptyArchive: true, artifacts: 'target/dependency-check-report.html', fingerprint: true, onlyIfSuccessful: true
               // dependencyCheckPublisher pattern: 'report.xml'
+            }
+          }
+        }
+        stage('SAST') {
+          steps {
+            container('slscan') {
+              sh 'scan --type java,depscan --build'
+            }
+          }
+          post {
+            success {
+              archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/*', fingerprint: true, onlyIfSuccessful: true
             }
           }
         }
