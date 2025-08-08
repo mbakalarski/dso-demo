@@ -108,8 +108,8 @@ pipeline {
           steps {
             container('docker-tools') {
               sh '''
-                apk add jq
-                apk add jq
+                apk add jq && \
+                apk add jq && \
                 dockle \
                 --username $(cat /tmp/.docker/config.json | jq -r '.auths."https://index.docker.io/v1/".username') \
                 --password $(cat /tmp/.docker/config.json | jq -r '.auths."https://index.docker.io/v1/".password') \
