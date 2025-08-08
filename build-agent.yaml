@@ -23,6 +23,8 @@ spec:
           name: docker-sock
         - mountPath: /tmp/trivycache/
           name: trivycache
+        - mountPath: /tmp/.docker
+          name: jenkins-docker-cfg
     - name: trufflehog
       image: rmkanda/trufflehog
       command:

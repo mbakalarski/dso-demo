@@ -107,7 +107,12 @@ pipeline {
         stage('Image Linting') {
           steps {
             container('docker-tools') {
-              sh 'dockle docker.io/mbakalarski/private:dso-demo-0.1'
+              sh '''
+                dockle \
+                --username $(cat /tmp/.docker/config.json | jq -r '.auths."https://index.docker.io/v1/".username') \
+                --password $(cat /tmp/.docker/config.json | jq -r '.auths."https://index.docker.io/v1/".password') \
+                docker.io/mbakalarski/private:dso-demo-0.1
+              '''
             }
           }
         }
