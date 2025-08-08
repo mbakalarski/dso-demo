@@ -102,6 +102,24 @@ pipeline {
         }
       }
     }
+    stage('OCI Image Analysis') {
+      parallel {
+        stage('Image Linting') {
+          steps {
+            container('docker-tools') {
+              sh 'dockle docker.io/mbakalarski/private:dso-demo-0.1'
+            }
+          }
+        }
+        stage('Image Scan') {
+          steps {
+            container('docker-tools') {
+              sh 'trivy image --timeout 10m --exit-code 1 mbakalarski/private:dso-demo-0.1'
+            }
+          }
+        }
+      }
+    }
 
     stage('Deploy to Dev') {
       steps {
