@@ -108,12 +108,11 @@ pipeline {
           steps {
             container('docker-tools') {
               sh '''
+                apk update && \
                 apk add jq && \
-                apk add jq && \
-                dockle \
-                --username $(cat /tmp/.docker/config.json | jq -r '.auths."https://index.docker.io/v1/".username') \
-                --password $(cat /tmp/.docker/config.json | jq -r '.auths."https://index.docker.io/v1/".password') \
-                docker.io/mbakalarski/private:dso-demo-0.1
+                USER=$(cat /tmp/.docker/config.json | jq -r '.auths."https://index.docker.io/v1/".username')
+                PASSWORD=$(cat /tmp/.docker/config.json | jq -r '.auths."https://index.docker.io/v1/".password')
+                dockle --username $USER --password $PASSWORD docker.io/mbakalarski/private:dso-demo-0.1
               '''
             }
           }
