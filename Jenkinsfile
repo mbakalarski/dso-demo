@@ -122,12 +122,8 @@ pipeline {
         stage('Image Scan') {
           steps {
             container('docker-tools') {
-              script {
-                env.TRIVY_USERNAME = env.DOCKLE_USERNAME
-                env.TRIVY_PASSWORD = env.DOCKLE_PASSWORD
-              }
-              sh "echo $TRIVY_USERNAME"
-              sh "echo $TRIVY_PASSWORD"
+              sh "echo $DOCKLE_USERNAME"
+              sh "echo $DOCKLE_PASSWORD"
               // sh 'trivy image --timeout 10m --exit-code 1 docker.io/mbakalarski/private:dso-demo-multistage'
             }
           }
