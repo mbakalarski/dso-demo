@@ -126,7 +126,7 @@ pipeline {
                 env.TRIVY_USERNAME = env.DOCKLE_USERNAME
                 env.TRIVY_PASSWORD = env.DOCKLE_PASSWORD
               }
-              sh 'trivy image --timeout 10m --exit-code 1 --username mbakalarski mbakalarski/private:dso-demo-multistage'
+              sh 'trivy image --timeout 10m --exit-code 1 mbakalarski/private:dso-demo-multistage'
             }
           }
         }
