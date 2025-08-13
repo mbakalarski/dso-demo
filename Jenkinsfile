@@ -107,13 +107,14 @@ pipeline {
         stage('Image Linting') {
           steps {
             container('docker-tools') {
-              sh '''
-                apk update && \
-                apk add jq && \
-                export DOCKLE_USERNAME=$(cat /tmp/.docker/config.json | jq -r '.auths."https://index.docker.io/v1/".username')
-                export DOCKLE_PASSWORD=$(cat /tmp/.docker/config.json | jq -r '.auths."https://index.docker.io/v1/".password')
-                dockle docker.io/mbakalarski/private:dso-demo-0.1
-              '''
+              sh 'apk update && apk add jq'
+              script {
+                def dockleUsername = sh(script: 'cat /tmp/.docker/config.json | jq -r \'.auths."https://index.docker.io/v1/".username\'', returnStdout: true).trim()
+                def docklePassword = sh(script: 'cat /tmp/.docker/config.json | jq -r \'.auths."https://index.docker.io/v1/".password\'', returnStdout: true).trim()
+                env.DOCKLE_USERNAME = dockleUsername
+                env.DOCKLE_PASSWORD = docklePassword
+              }
+              sh 'dockle docker.io/mbakalarski/private:dso-demo-0.1'
             }
           }
         }
