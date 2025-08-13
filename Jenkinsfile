@@ -94,13 +94,13 @@ pipeline {
             }
           }
         }
-        stage('OCI Image BnP') {
-          steps {
-            container('kaniko') {
-              sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination=docker.io/mbakalarski/private:dso-demo-multistage'
-            }
-          }
-        }
+        // stage('OCI Image BnP') {
+        //   steps {
+        //     container('kaniko') {
+        //       sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination=docker.io/mbakalarski/private:dso-demo-multistage'
+        //     }
+        //   }
+        // }
       }
     }
     stage('OCI Image Analysis') {
