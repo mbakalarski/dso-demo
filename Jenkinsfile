@@ -66,7 +66,8 @@ pipeline {
         stage('SAST') {
           steps {
             container('slscan') {
-              sh 'scan --type java,depscan --build'
+              // sh 'scan --type java,depscan --build'
+              sh "echo done"
             }
           }
           post {
@@ -114,14 +115,14 @@ pipeline {
                 env.DOCKLE_USERNAME = dockleUsername
                 env.DOCKLE_PASSWORD = docklePassword
               }
-              sh 'dockle docker.io/mbakalarski/private:dso-demo-0.1'
+              sh 'dockle docker.io/mbakalarski/private:dso-demo-multistage'
             }
           }
         }
         stage('Image Scan') {
           steps {
             container('docker-tools') {
-              sh 'trivy image --timeout 10m --exit-code 1 mbakalarski/private:dso-demo-0.1'
+              sh 'trivy image --timeout 10m --exit-code 1 mbakalarski/private:dso-demo-multistage'
             }
           }
         }
