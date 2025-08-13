@@ -46,7 +46,7 @@ pipeline {
             }
           }
         }
-        stage('[supply chain] OWASP Dependency-Check') {
+        stage('[supply chain][SCA] OWASP Dependency-Check') {
           steps {
             container('maven') {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -96,7 +96,7 @@ pipeline {
         stage('OCI Image BnP') {
           steps {
             container('kaniko') {
-              sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination=docker.io/mbakalarski/private:dso-demo-0.1'
+              sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination=docker.io/mbakalarski/private:dso-demo-multistage'
             }
           }
         }
