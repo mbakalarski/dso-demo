@@ -63,11 +63,12 @@ pipeline {
             }
           }
         }
+
+        /*
         stage('SAST') {
           steps {
             container('slscan') {
-              // sh 'scan --type java,depscan --build'
-              sh "echo done"
+              sh 'scan --type java,depscan --build'
             }
           }
           post {
@@ -76,6 +77,8 @@ pipeline {
             }
           }
         }
+        */
+
         stage('Unit Tests') {
           steps {
             container('maven') {
