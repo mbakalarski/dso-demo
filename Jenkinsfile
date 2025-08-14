@@ -123,10 +123,10 @@ pipeline {
         stage('Image Scan') {
           steps {
             container('docker-tools') {
-              script {
-                env.TRIVY_USERNAME = "${env.DOCKLE_USERNAME}"
-                env.TRIVY_PASSWORD = "${env.DOCKLE_PASSWORD}"
-              }
+              // script {
+              //   env.TRIVY_USERNAME = "${env.DOCKLE_USERNAME}"
+              //   env.TRIVY_PASSWORD = "${env.DOCKLE_PASSWORD}"
+              // }
               sh "echo $DOCKLE_USERNAME"
               sh "echo $DOCKLE_PASSWORD"
               sh "echo $TRIVY_USERNAME"
