@@ -1,9 +1,12 @@
-FROM maven:3.8.7-openjdk-18-slim AS build
+# FROM maven:3.8.7-openjdk-18-slim AS build
+# FROM maven:3.8.7-openjdk-18 AS build
+FROM maven:3.9.11-ibm-semeru-21-noble AS build
 WORKDIR /app
 COPY .  .
 RUN mvn package -DskipTests
 
-FROM openjdk:18-alpine AS run
+# FROM openjdk:18-alpine AS run
+FROM ibm-semeru-runtimes:open-jdk-24.0.2_12-jre AS run
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar /run/demo.jar
 
 ARG USER=devops

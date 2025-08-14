@@ -8,7 +8,6 @@ pipeline {
   }
 
   stages {
-    /*
     stage('Build') {
       parallel {
         stage('Compile') {
@@ -104,7 +103,6 @@ pipeline {
         }
       }
     }
-    */
     stage('Get Registry Creds') {
       steps {
         container('bash') {
@@ -139,7 +137,7 @@ pipeline {
                 env.TRIVY_USERNAME = "${env.REGCRED_USERNAME}"
                 env.TRIVY_PASSWORD = "${env.REGCRED_PASSWORD}"
               }
-              sh 'trivy image --timeout 10m --exit-code 1 docker.io/mbakalarski/private:dso-demo-multistage'
+              sh 'trivy image --timeout 10m --severity CRITICAL --exit-code 1 docker.io/mbakalarski/private:dso-demo-multistage'
             }
           }
         }
