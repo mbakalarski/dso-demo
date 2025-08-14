@@ -105,7 +105,7 @@ pipeline {
       }
     }
     */
-    stage('Get Image Registry Creds') {
+    stage('Get Registry Creds') {
       steps {
         container('bash') {
           sh 'apk add jq --no-cache'
@@ -118,7 +118,6 @@ pipeline {
         }
       }
     }
-
     stage('OCI Image Analysis') {
       parallel {
         stage('Image Linting') {
@@ -126,17 +125,13 @@ pipeline {
             container('docker-tools') {
               sh 'apk add jq --no-cache'
               script {
-                def dockleUsername = sh(script: 'cat /tmp/.docker/config.json | jq -r \'.auths."https://index.docker.io/v1/".username\'', returnStdout: true).trim()
-                def docklePassword = sh(script: 'cat /tmp/.docker/config.json | jq -r \'.auths."https://index.docker.io/v1/".password\'', returnStdout: true).trim()
-                env.DOCKLE_USERNAME = dockleUsername
-                env.DOCKLE_PASSWORD = docklePassword
+                env.DOCKLE_USERNAME = "${env.REGCRED_USERNAME}"
+                env.DOCKLE_PASSWORD = "${env.REGCRED_PASSWORD}"
               }
               sh 'dockle docker.io/mbakalarski/private:dso-demo-multistage'
             }
           }
         }
-
-
         stage('Image Scan') {
           steps {
             container('docker-tools') {
@@ -144,15 +139,12 @@ pipeline {
                 env.TRIVY_USERNAME = "${env.REGCRED_USERNAME}"
                 env.TRIVY_PASSWORD = "${env.REGCRED_PASSWORD}"
               }
-              // sh "echo TRIVY_USERNAME: $TRIVY_USERNAME"
-              // sh "echo TRIVY_PASSWORD: $TRIVY_PASSWORD"
               sh 'trivy image --timeout 10m --exit-code 1 docker.io/mbakalarski/private:dso-demo-multistage'
             }
           }
         }
       }
     }
-
     stage('Deploy to Dev') {
       steps {
         // TODO
