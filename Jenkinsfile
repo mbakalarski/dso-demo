@@ -108,6 +108,7 @@ pipeline {
     stage('Get Image Registry Creds') {
       steps {
         container('bash') {
+          sh 'apk add jq --no-cache'
           script {
             def regcredUsername = sh(script: 'cat /tmp/.docker/config.json | jq -r \'.auths."https://index.docker.io/v1/".username\'', returnStdout: true).trim()
             def regcredPassword = sh(script: 'cat /tmp/.docker/config.json | jq -r \'.auths."https://index.docker.io/v1/".password\'', returnStdout: true).trim()
