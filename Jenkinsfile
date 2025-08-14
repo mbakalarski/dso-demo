@@ -122,6 +122,7 @@ pipeline {
           }
         }
 
+        /*
         stage('Image Scan') {
           steps {
             container('docker-tools') {
@@ -131,12 +132,13 @@ pipeline {
               // }
               sh "echo DOCKLE_USERNAME: $DOCKLE_USERNAME"
               sh "echo DOCKLE_PASSWORD: $DOCKLE_PASSWORD"
-              sh "echo TRIVY_USERNAME: $TRIVY_USERNAME"
-              sh "echo TRIVY_PASSWORD: $TRIVY_PASSWORD"
+              // sh "echo TRIVY_USERNAME: $TRIVY_USERNAME"
+              // sh "echo TRIVY_PASSWORD: $TRIVY_PASSWORD"
               // sh 'trivy image --timeout 10m --exit-code 1 docker.io/mbakalarski/private:dso-demo-multistage'
             }
           }
         }
+        */
       }
     }
 
