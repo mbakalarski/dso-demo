@@ -54,6 +54,15 @@ spec:
       command:
         - cat
       tty: true
+    - name: bash
+      image: bash:alpine3.22
+      imagePullPolicy: Always
+      command:
+        - sleep
+        - 1d
+      volumeMounts:
+        - name: jenkins-docker-cfg
+          mountPath: /tmp/.docker
   volumes:
     - name: m2
       hostPath:
