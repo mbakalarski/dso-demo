@@ -10,13 +10,12 @@ COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar /run/demo.jar
 
 ARG USER=devops
 ENV HOME /home/$USER
-# RUN adduser --disabled-password $USER && \
-# RUN useradd -m $USER && \
-#     chown $USER:$USER /run/demo.jar
-RUN useradd -m $USER && chown $USER:$USER /run/demo.jar || \
-    adduser --disabled-password $USER && chown $USER:$USER /run/demo.jar
+RUN adduser --disabled-password $USER && chown $USER:$USER /run/demo.jar || \
+    useradd -m $USER && chown $USER:$USER /run/demo.jar
 
-RUN apk add curl --no-cache
+# RUN apk add curl --no-cache
+RUN apk add curl --no-cache || \
+    apt-get -qq update && apt-get install curl -qy
 HEALTHCHECK --interval=30s --timeout=10s --retries=2 --start-period=20s \
     CMD curl -f http://localhost:8080/ || exit 1
 
