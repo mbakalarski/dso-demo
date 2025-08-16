@@ -152,9 +152,10 @@ pipeline {
       steps {
         container('bash') {
           sh '''
-          wget https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64' &&
-          install -m 555 argocd-linux-amd64 /usr/local/bin/argocd' &&
-          rm argocd-linux-amd64
+            apk add curl --no-cache &&
+            curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64 &&
+            install -m 555 argocd-linux-amd64 /usr/local/bin/argocd &&
+            rm argocd-linux-amd64
           '''
           withCredentials([string(credentialsId: 'argocd-jenkins-deployer-token', variable: 'AUTH_TOKEN')]) {
             sh 'argocd app sync dso-demo --insecure --server $ARGO_SERVER --auth-token $AUTH_TOKEN'
