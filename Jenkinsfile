@@ -123,7 +123,6 @@ pipeline {
         stage('Image Linting') {
           steps {
             container('docker-tools') {
-              sh 'apk add jq --no-cache'
               script {
                 env.DOCKLE_USERNAME = "${env.REGCRED_USERNAME}"
                 env.DOCKLE_PASSWORD = "${env.REGCRED_PASSWORD}"
