@@ -63,7 +63,6 @@ pipeline {
           }
         }
 
-        /*
         stage('SAST') {
           steps {
             container('slscan') {
@@ -76,7 +75,6 @@ pipeline {
             }
           }
         }
-        */
 
         stage('Unit Tests') {
           steps {
