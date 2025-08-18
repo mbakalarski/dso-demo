@@ -6,6 +6,10 @@ pipeline {
       idleMinutes 1
     }
   }
+  environment {
+    ARGO_SERVER = '192.168.122.43:30102'
+    DEV_URL = 'http://192.168.122.251:30080'
+  }
   stages {
     stage('Build') {
       parallel {
@@ -143,9 +147,10 @@ pipeline {
       }
     }
     stage('Deploy to Dev') {
-      environment {
-        ARGO_SERVER = "192.168.122.43:30102"
-      }
+      // environment {
+      //   ARGO_SERVER = '192.168.122.43:30102'
+      //   DEV_URL = 'http://192.168.122.251:30080'
+      // }
       steps {
         container('bash') {
           sh '''
@@ -158,6 +163,13 @@ pipeline {
             sh 'argocd app sync dso-demo --insecure --server $ARGO_SERVER --auth-token $AUTH_TOKEN'
             sh 'argocd app wait dso-demo --health --timeout 300 --insecure --server $ARGO_SERVER --auth-token $AUTH_TOKEN'
           }
+        }
+      }
+    }
+    stage('DAST') {
+      steps {
+        container('docker-tools') {
+          sh 'docker run -i ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t $DEV_URL'
         }
       }
     }
