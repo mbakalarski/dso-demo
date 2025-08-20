@@ -22,7 +22,6 @@ pipeline {
         }
       }
     }
-    /*
     stage('[Test] Static Analysis') {
       parallel {
         stage('[compliance] OSS License Checker') {
@@ -90,8 +89,6 @@ pipeline {
         }
       }
     }
-    */
-    /*
     stage('Package') {
       parallel {
         stage('Create Jarfile') {
@@ -110,7 +107,6 @@ pipeline {
         }
       }
     }
-    */
     stage('Get Registry Creds') {
       steps {
         container('bash') {
@@ -124,7 +120,6 @@ pipeline {
         }
       }
     }
-    /*
     stage('OCI Image Analysis') {
       parallel {
         stage('Image Linting') {
@@ -151,7 +146,6 @@ pipeline {
         }
       }
     }
-    */
     stage('Deploy to Dev') {
       steps {
         container('bash') {
@@ -171,7 +165,6 @@ pipeline {
     stage('[Test] Dynamic Analysis - DAST') {
       steps {
         container('zap') {
-          // sh 'docker run -i ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t $DEV_URL'
           sh '/zap/zap-baseline.py -I -t $DEV_URL'
         }
       }
