@@ -172,7 +172,7 @@ pipeline {
       steps {
         container('zap') {
           // sh 'docker run -i ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t $DEV_URL'
-          sh '/zap/zap-baseline.py -t $DEV_URL'
+          sh '/zap/zap-baseline.py -I -t $DEV_URL'
         }
       }
     }
