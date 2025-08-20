@@ -24,7 +24,7 @@ pipeline {
     }
     stage('[Test] Static Analysis') {
       parallel {
-        stage('[supply chain][compliance] OSS License Checker') {
+        stage('[compliance] OSS License Checker') {
           steps {
             container('licensefinder') {
               sh 'ls -al'
@@ -37,7 +37,7 @@ pipeline {
             }
           }
         }
-        stage('[supply chain] Generate SBOM') {
+        stage('Generate SBOM') {
           steps {
             container('maven') {
               sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
@@ -49,7 +49,7 @@ pipeline {
             }
           }
         }
-        stage('[supply chain][SCA] OWASP Dependency-Check') {
+        stage('[SCA] OWASP Dependency-Check') {
           steps {
             container('maven') {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -140,7 +140,7 @@ pipeline {
                 env.TRIVY_USERNAME = "${env.REGCRED_USERNAME}"
                 env.TRIVY_PASSWORD = "${env.REGCRED_PASSWORD}"
               }
-              sh 'trivy image --timeout 10m --severity CRITICAL --exit-code 1 docker.io/mbakalarski/private:dso-demo-multistage'
+              sh 'trivy image --timeout 15m --severity CRITICAL --exit-code 1 docker.io/mbakalarski/private:dso-demo-multistage'
             }
           }
         }
@@ -166,7 +166,7 @@ pipeline {
         }
       }
     }
-    stage('DAST') {
+    stage('[Test] Dynamic Analysis - DAST') {
       steps {
         container('docker-tools') {
           sh 'docker run -i ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t $DEV_URL'
