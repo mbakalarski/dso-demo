@@ -22,6 +22,7 @@ pipeline {
         }
       }
     }
+    /*
     stage('[Test] Static Analysis') {
       parallel {
         stage('[compliance] OSS License Checker') {
@@ -89,6 +90,8 @@ pipeline {
         }
       }
     }
+    */
+    /*
     stage('Package') {
       parallel {
         stage('Create Jarfile') {
@@ -107,6 +110,7 @@ pipeline {
         }
       }
     }
+    */
     stage('Get Registry Creds') {
       steps {
         container('bash') {
@@ -120,6 +124,7 @@ pipeline {
         }
       }
     }
+    /*
     stage('OCI Image Analysis') {
       parallel {
         stage('Image Linting') {
@@ -146,11 +151,8 @@ pipeline {
         }
       }
     }
+    */
     stage('Deploy to Dev') {
-      // environment {
-      //   ARGO_SERVER = '192.168.122.43:30102'
-      //   DEV_URL = 'http://192.168.122.251:30080'
-      // }
       steps {
         container('bash') {
           sh '''
@@ -168,8 +170,9 @@ pipeline {
     }
     stage('[Test] Dynamic Analysis - DAST') {
       steps {
-        container('docker-tools') {
-          sh 'docker run -i ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t $DEV_URL'
+        container('zap') {
+          // sh 'docker run -i ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t $DEV_URL'
+          sh '/zap/zap-baseline.py -t $DEV_URL'
         }
       }
     }

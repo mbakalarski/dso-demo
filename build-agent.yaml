@@ -63,6 +63,12 @@ spec:
       volumeMounts:
         - name: jenkins-docker-cfg
           mountPath: /tmp/.docker
+    - name: zap
+      image: ghcr.io/zaproxy/zaproxy:stable
+      imagePullPolicy: Always
+      command:
+        - sleep
+        - 1d
   volumes:
     - name: m2
       hostPath:
